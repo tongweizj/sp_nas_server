@@ -1,0 +1,56 @@
+version: '3.1'
+services:
+
+  # nginx container #########################################
+  nginx:
+    image: nginx:stable-alpine
+    container_name: ser_nginx
+    volumes:
+      - /home/max/workspace/docker/nginx/conf.d:/etc/nginx/conf.d
+      - /home/max/workspace/docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /home/max/workspace/app/www:/home/www
+    ports:
+      - "80:80"
+      - "100:100"
+      - "101:101"
+      - "110:110"
+    environment:
+      - NGINX_PORT=80
+    restart: always
+  ### portainer docker manager web ############################
+  portainer:
+    image: portainer/portainer-ce
+    restart: always
+    environment:
+      - VIRTUAL_HOST=dev.portainer
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - "9000:9000"
+  ### mongo container #########################################
+  mongo:
+    image: mongo
+    restart: always
+    container_name: ser_mongo
+    volumes:
+      - ./services/db:/workspace/db
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+  ### node_dev container #########################################
+  node_dev:
+    image: node:lts
+    container_name: node_dev
+    volumes:
+      - ./dev:/workspace
+    ports:
+      - "13010:13010"
+    tty: true
+    restart: always
+volumes:
+  portainer_data:
