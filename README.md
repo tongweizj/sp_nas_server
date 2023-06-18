@@ -17,14 +17,9 @@ sudo apt install openssh-server -y
 
 ### 1) 文件管理
 
-#### 硬盘合并 mergerfs
+#### Alist
 
-选择mergerfs的原因主要如下：
-第一、可以很方便的将多块硬盘合并挂在一个目录使用，不用考虑硬盘文件格式，比如我用的就是NTFS格式。
-第二、方便后续文件备份。由于mergerfs的特殊硬盘以及文件管理模式，在用ntfs格式的前提下，我们可以很方便的将单个硬盘取出挂在windows下进行读取备份。
-
-
-
+- [alist 安装指南](https://alist.nn.ci/zh/guide/install/docker.html#%E5%8F%91%E8%A1%8C%E7%89%88%E6%9C%AC)
 
 #### samba服务
 
@@ -48,58 +43,24 @@ sudo vi /etc/samba/smb.conf
 
 ### 2）Docker
 
-```
-
-// 安装docker
-sudo apt install curl
-
-// install docker
-// 1.
-Sudo apt-get remove docker docker-engine docker.io
-
-// 2.
-Sudo apt-get update
-
-// 3.
-Sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
-
-// 4.
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | Sudo apt-key add -
-
-// 5.
-Sudo apt-key fingerprint 0EBFCD88
-
-// 6. ubuntu
-Sudo add-apt-repository "deb [Arch=AMD64] https://download.docker.com/linux/ubuntu \
-$(lsb_release -cs) \
-stable"
-// 6. ubuntu衍生版本
-add-apt-repository "deb [Arch=AMD64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo "$UBUNTU_CODENAME") stable"
-// 7.
-Sudo apt-get update
-
-// 8.
-Sudo apt-get install docker-ce
-```
+- [how-to-install-and-use-docker-on-ubuntu-22-04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04)
 
 #### docker-compose
 
-```brash
-//1. Run this command to download the current stable release of Docker Compose:
-sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+- [how-to-install-and-use-docker-compose-on-ubuntu-22-04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04)
 
-// 2. Apply executable permissions to the binary:
-sudo chmod +x /usr/local/bin/docker-compose
+## 娱乐
 
-// 3. Test the installation.
-docker-compose --version
+### jellyfin
+
+- [docker-jellyfin](https://hub.docker.com/r/linuxserver/jellyfin)
+
 ## Nas服务
 
 ### nginx + nas主页
 
 docker 配置文件见 docker-compose.yam
 
-```
 
 #### docker 常用操作命令
 

@@ -6,8 +6,8 @@ services:
     image: nginx:stable-alpine
     container_name: ser_nginx
     volumes:
-      - /home/max/workspace/docker/nginx/conf.d:/etc/nginx/conf.d
-      - /home/max/workspace/docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /home/max/workspace/app/nginx/conf.d:/etc/nginx/conf.d
+      - /home/max/workspace/app/nginx/nginx.conf:/etc/nginx/nginx.conf
       - /home/max/workspace/app/www:/home/www
     ports:
       - "80:80"
@@ -36,7 +36,7 @@ services:
     restart: always
     container_name: ser_mongo
     volumes:
-      - ./services/db:/workspace/db
+      - /home/max/workspace/services/mongodb:/workspace/db
     ports:
       - 27017:27017
     environment:
@@ -47,10 +47,44 @@ services:
     image: node:lts
     container_name: node_dev
     volumes:
-      - ./dev:/workspace
+      - /home/max/workspace/dev:/workspace
     ports:
       - "13010:13010"
     tty: true
     restart: always
+  ### alist container #########################################
+  alist:
+    restart: always
+    volumes:
+        - '/etc/alist:/opt/alist/data'
+    ports:
+        - '5244:5244'
+    environment:
+        - PUID=0
+        - PGID=0
+        - UMASK=022
+    container_name: alist
+    image: 'xhofe/alist:latest'
+  ### jellyfin container #########################################        
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - JELLYFIN_PublishedServerUrl=192.168.2.100 #optional
+    volumes:
+      - /home/max/homelab/workspace/app/jellyfin/library:/config
+      - /home/max/homelab/files/video/tvshows:/data/tvshows
+      - /home/max/homelab/files/video/movies:/data/movies
+      - /home/max/homelab/files/video/cartoon:/data/cartoon
+      - /home/max/homelab/files/video/lighthouse:/data/lighthouse       
+    ports:
+      - 12000:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    restart: unless-stopped
 volumes:
   portainer_data:
